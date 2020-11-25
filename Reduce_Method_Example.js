@@ -1,8 +1,7 @@
 // Note : XMLHttpRequest is a built-in object in web browsers.
 // It is not distributed with Node; you have to install it separately.
 
-try 
-{
+
     "use strict" // Avoids hoisting of variables
 
     if ((typeof process !== 'undefined') && (process.release.name === 'node')) // Checks if it is running in node process and includes xmlhttprequest via a call to a function require
@@ -31,7 +30,3 @@ try
         console.log("Total population of all the countries is :",totalPopulationOfAllCountries)
     }
     
-} 
-catch (error) {
-    console.error(error.name)
-}
