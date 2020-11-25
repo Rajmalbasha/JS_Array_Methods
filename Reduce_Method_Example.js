@@ -18,15 +18,35 @@
     // Called after receiving the response
     request.onload = function()
     {
+        //HTTP response status codes indicate whether a specific HTTP request has been successfully completed.
+        // Responses are grouped in five classes:
+        //Informational responses (100–199)
+        //Successful responses (200–299)
+        //Redirects (300–399)
+        //Client errors (400–499)
+        //Server errors (500–599)
+        if(request.status != 200)
+        {
+            console.error("Error: ", request.status,request.statusText)
+        }
+        else
+        {
+            // Returns an array of objects and each object contains country name, region, sub region etc. all the details of the country
+            let data = JSON.parse(this.responseText)
         
-        // Returns an array of objects and each object contains country name, region, sub region etc. all the details of the country
-        let data = JSON.parse(this.responseText)
+            // Executes provided function for each value of the array and reduce the array to single value. However it doesn't modify the original array
+            const totalPopulationOfAllCountries = data.reduce((result,item)=>{
+                return result+=item.population
+            },0)
         
-        // Executes provided function for each value of the array and reduce the array to single value. However it doesn't modify the original array
-        const totalPopulationOfAllCountries = data.reduce((result,item)=>{
-            return result+=item.population
-        },0)
+            console.log("Total population of all the countries is :",totalPopulationOfAllCountries)
+        }
         
-        console.log("Total population of all the countries is :",totalPopulationOfAllCountries)
     }
+
+    // handles non-HTTP error like network down
+    request.onerror = function()
+    {
+        console.log("Request couldn’t be made, might be due to network down ");
+    };
     

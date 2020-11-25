@@ -18,22 +18,42 @@
     // Called after receiving the response
     request.onload = function()
     {
+        //HTTP response status codes indicate whether a specific HTTP request has been successfully completed.
+        // Responses are grouped in five classes:
+        //Informational responses (100–199)
+        //Successful responses (200–299)
+        //Redirects (300–399)
+        //Client errors (400–499)
+        //Server errors (500–599)
+        if(request.status != 200)
+        {
+            console.error("Error: ", request.status,request.statusText)
+        }
+        else {
+            // Returns an array of objects and each object contains country name, region, sub region etc. all the details of the country
+            let data = JSON.parse(this.responseText)
+
+            // Returns an new array of objects whose region is Asia
+            const getAsianCountryObjects = data.filter((item) => {
+                return item.region === 'Asia'
+            })
+
+            // Map returns an new array with the results of calling a function for every array element
+            // Here the function returns an new string array of all the asian country names
+            const getAsianCountryNames = getAsianCountryObjects.map((item)=>{
+                return item.name
+            })
+
+            console.log(getAsianCountryNames)
+        }
         
-        // Returns an array of objects and each object contains country name, region, sub region etc. all the details of the country
-        let data = JSON.parse(this.responseText)
-
-        // Returns an new array of objects whose region is Asia
-        const getAsianCountryObjects = data.filter((item) => {
-            return item.region === 'Asia'
-        })
-
-        // Map returns an new array with the results of calling a function for every array element
-        // Here the function returns an new string array of all the asian country names
-        const getAsianCountryNames = getAsianCountryObjects.map((item)=>{
-            return item.name
-        })
-
-        console.log(getAsianCountryNames)
     }
+
+    // handles non-HTTP error like network down
+    request.onerror = function()
+    {
+        console.log("Request couldn’t be made, might be due to network down ");
+    };
+    
     
 
